@@ -1,3 +1,5 @@
+import streamlit as st
+import plotly.graph_objects as go
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 import csv
@@ -8,18 +10,24 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
+import time
 
-while True:
-    instagram_video_link = input("Enter Instagram reel link: ")
+st.title("Sentiment Analysis")
+st.write("Find out what people really think about your Reels! ")
+
+instagram_video_link = st.text_input("Enter Instagram reel link: ")
+
+# while True:
+# instagram_video_link = input("Enter Instagram reel link: ")
     
-    if instagram_video_link.startswith == "https://www.instagram.com/":
-        break
-    else:
-        print("Please enter a valid link")
+    # # if instagram_video_link.startswith == "https://www.instagram.com/":
+    # #     break
+    # else:
+    #     print("Please enter a valid link")
 
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True,slow_mo=50)
+    browser = p.chromium.launch(headless=False,slow_mo=50)
     page = browser.new_page()
     page.goto(instagram_video_link)
     
@@ -31,6 +39,15 @@ with sync_playwright() as p:
     
     # all_spans = page.locator('//span').all()
     all_spans = page.locator('//span[contains(@style, "--x-lineHeight: 20px")]').all()
+    
+    # page.mouse.down(335, 400.44)
+    
+    # for x in range(1,5):
+    #     page.keyboard.press("End")
+    #     print("scrolling key press",x)
+    #     time.sleep(3)
+    # Click on more comments button
+    # page.locator("div[role='button']", has=page.locator("svg[aria-label='Load more comments']")).click()
 
     comments = []
     for span in all_spans:
@@ -93,25 +110,43 @@ def overall_sentiment():
 
     df = pd.read_csv('sentiment_for_each_comment.csv')
 
-    count_positive = df['sentiment'].value_counts().get(1)
-    # print(count_positive)
+    count_positive = df['sentiment'].value_counts().get(1,0)
+    print(count_positive)
 
-    count_negative = df['sentiment'].value_counts().get(0)
-    # print(count_negative)
+    count_negative = df['sentiment'].value_counts().get(0,0)
+    print(count_negative)
+    
+    # total_comments = count_positive + count_negative
+    
+    # percentage_of_positive_comments = count_positive/total_comments * 100
+    # print(f"Percentage of positive comments",percentage_of_positive_comments,"%")
+    
+    # percentage_of_negative_comments = count_negative/total_comments * 100
+    # print(f"Percentage of negative comments",percentage_of_negative_comments,"%")
+    
+    labels = ["Positive", "Negative"]
+    values = [count_positive, count_negative]
 
-    if count_positive > count_negative:
-        print("A lot of postive sentiment")
-    else:
-        print("A lot of negative sentiment")
-        
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0)])  # hole=0 gives a solid pie
+
+    fig.update_layout(title_text="Sentiment Distribution of Comments")
+
+    # Display in Streamlit
+    st.plotly_chart(fig)
+    
+    # most_common_words = df['Comments'].mode()
+    
+    # print(f"Most common words found",most_common_words)
+            
 overall_sentiment()
 
 
-# from sklearn.metrics import confusion_matrix
 
-# print(confusion_matrix(df['Positive'], df['sentiment']))
+# # from sklearn.metrics import confusion_matrix
 
-# from sklearn.metrics import classification_report
+# # print(confusion_matrix(df['Positive'], df['sentiment']))
 
-# print(classification_report(df['Positive'], df['sentiment']))
+# # from sklearn.metrics import classification_report
+
+# # print(classification_report(df['Positive'], df['sentiment']))
 
