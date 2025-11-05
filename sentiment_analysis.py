@@ -33,7 +33,7 @@ with sync_playwright() as p:
     # all_spans = page.locator('//span').all()
     all_spans = page.locator('//span[contains(@style, "--x-lineHeight: 20px")]').all()
     
-    page.mouse.down(335, 400.44)
+    # page.mouse.down(335, 400.44)
     
     # for x in range(1,5):
     #     page.keyboard.press("End")
