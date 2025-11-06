@@ -1,5 +1,4 @@
 from playwright.sync_api import sync_playwright
-import creds
 import csv
 import pandas as pd
 import nltk
@@ -51,8 +50,13 @@ import time
 # This only works when a CSV file is uploaded from the frontend.
 
 def read_comments(uploaded_file):
+    # Reads the CSV file that has been uploaded by user
     df = pd.read_csv(uploaded_file)
-    return df
+    # The CSV file is then put into a new CSV called "comments_analysis"
+    df.to_csv("comments_analysis.csv", index=False)
+    return df 
+     
+# Assigned a variable which will be used for analysis.     
      
 # # Sentiment_analysis 
 
@@ -66,41 +70,45 @@ def preprocess_text(text):
     lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
     # Join the tokens back into a string
     processed_text = ' '.join(lemmatized_tokens)
-    
     return processed_text
 
-# analyzer = SentimentIntensityAnalyzer()
+analyzer = SentimentIntensityAnalyzer()
 
-# def get_sentiment(text):
-#     scores = analyzer.polarity_scores(text)
-#     sentiment = 1 if scores['pos'] > 0 else 0
-#     return sentiment
+def get_sentiment(text):
+    scores = analyzer.polarity_scores(text)
+    sentiment = 1 if scores['pos'] > 0 else 0    
+    return sentiment
 
-# def overall_sentiment():
-#     # print(comments)
+def overall_sentiment(df):
+    df["Processed"] = df["Comments"].apply(preprocess_text)
+    df["sentiment"] = df["Processed"].apply(get_sentiment)
 
-#     # Read and find the overall sentiment.
-
-#     df = pd.read_csv('sentiment_for_each_comment.csv')
-
-#     count_positive = df['sentiment'].value_counts().get(1)
-#     print(count_positive)
-
-#     count_negative = df['sentiment'].value_counts().get(0)
-#     print(count_negative)
+    # This counts the number of unique values, so the number of 1s and 0s
+    count_positive = df["sentiment"]
+    count_positive.value_counts().get(1, 0)
     
-#     total_comments = count_positive + count_negative
+    count_negative = df["sentiment"]
+    count_negative.value_counts().get(0, 0)
     
-#     percentage_of_positive_comments = count_positive/total_comments * 100
-#     print(f"Percentage of positive comments",percentage_of_positive_comments,"%")
+    total_comments = count_positive + count_negative
     
-#     percentage_of_negative_comments = count_negative/total_comments * 100
-#     print(f"Percentage of negative comments",percentage_of_negative_comments,"%")
+    percentage_of_positive_comments = count_positive/total_comments * 100
+    # print(f"Percentage of positive comments",percentage_of_positive_comments,"%")
     
-#     most_common_words = df['Comments'].mode()
+    percentage_of_negative_comments = count_negative/total_comments * 100
+    # print(f"Percentage of negative comments",percentage_of_negative_comments,"%")
     
-#     print(f"Most common words found",most_common_words)
-            
-# overall_sentiment()
+    # keys are assigned to each analysis piece so that it is easier to retrieve and display the value in the frontend.
+    # So positive_count is the key and count_positive is the value.
+    return_back_to_frontend = {
+        "df": df,
+        "positive_count": count_positive,
+        "negative_count": count_negative,
+        "total": total_comments,
+        "percent_positive": percentage_of_positive_comments,
+        "percent_negative": percentage_of_negative_comments
+    }   
+    
+    return return_back_to_frontend          
 
 
