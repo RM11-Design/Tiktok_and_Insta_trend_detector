@@ -9,6 +9,8 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import time
 
+# LINK UPLOAD --------------------------------------------------------------------
+
 # while True:
 
 # instagram_video_link = "https://www.instagram.com/p/DQr0xdwDYnN/?img_index=1"
@@ -44,50 +46,30 @@ import time
     
 #     return comments
 
+# -------------------------------------------------------------------------------
+
+# This only works when a CSV file is uploaded from the frontend.
+
 def read_comments(uploaded_file):
     df = pd.read_csv(uploaded_file)
     return df
-
-
-                
-# filename = "comments.csv"
-# with open(filename, mode='w', newline='', encoding='utf-8') as file:
-#     writer = csv.DictWriter(file,fieldnames=["Comments"])
-#     for comment in comments:
-#         writer.writerow({"Comments": comment})
-
-# h = ["Comments"]
-# comments = pd.read_csv("comments.csv", header=None, names=h)   
-# comments.to_csv("comments.csv", index=False)
      
+# # Sentiment_analysis 
 
-# # Sentiment_analysis
+def preprocess_text(text):
+    # Tokenize the text
+    tokens = word_tokenize(text.lower())
+    # Remove stop words
+    filtered_tokens = [token for token in tokens if token not in stopwords.words('english')]
+    # Lemmatize the tokens
+    lemmatizer = WordNetLemmatizer()
+    lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
+    # Join the tokens back into a string
+    processed_text = ' '.join(lemmatized_tokens)
     
-# comments = pd.read_csv('comments.csv')
-
-# # create preprocess_text function
-# def preprocess_text(text):
-
-#     # Tokenize the text
-#     tokens = word_tokenize(text.lower())
-
-#     # Remove stop words
-#     filtered_tokens = [token for token in tokens if token not in stopwords.words('english')]
-
-#     # Lemmatize the tokens
-#     lemmatizer = WordNetLemmatizer()
-#     lemmatized_tokens = [lemmatizer.lemmatize(token) for token in filtered_tokens]
-
-#     # Join the tokens back into a string
-#     processed_text = ' '.join(lemmatized_tokens)
-
-#     return processed_text
-
-# comments['Comments'] = comments['Comments'].apply(preprocess_text)
+    return processed_text
 
 # analyzer = SentimentIntensityAnalyzer()
-
-# # create get_sentiment function
 
 # def get_sentiment(text):
 #     scores = analyzer.polarity_scores(text)
@@ -95,11 +77,7 @@ def read_comments(uploaded_file):
 #     return sentiment
 
 # def overall_sentiment():
-#     comments['sentiment'] = comments['Comments'].apply(get_sentiment)
-
 #     # print(comments)
-
-#     comments.to_csv('sentiment_for_each_comment.csv', index=False)
 
 #     # Read and find the overall sentiment.
 
@@ -119,12 +97,9 @@ def read_comments(uploaded_file):
 #     percentage_of_negative_comments = count_negative/total_comments * 100
 #     print(f"Percentage of negative comments",percentage_of_negative_comments,"%")
     
-    # most_common_words = df['Comments'].mode()
+#     most_common_words = df['Comments'].mode()
     
-    # print(f"Most common words found",most_common_words)
-    
-
-
+#     print(f"Most common words found",most_common_words)
             
 # overall_sentiment()
 
