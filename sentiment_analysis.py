@@ -84,27 +84,25 @@ def overall_sentiment(df):
     df["sentiment"] = df["Processed"].apply(get_sentiment)
 
     # This counts the number of unique values, so the number of 1s and 0s
-    count_positive = df["sentiment"]
-    count_positive.value_counts().get(1, 0)
+    positive_count = df["sentiment"].value_counts().get(1, 0)
     
-    count_negative = df["sentiment"]
-    count_negative.value_counts().get(0, 0)
+    negative_count = df["sentiment"].value_counts().get(0, 0)
     
-    total_comments = count_positive + count_negative
+    total_comments = positive_count + negative_count
     
-    percentage_of_positive_comments = count_positive/total_comments * 100
+    percentage_of_positive_comments = positive_count/total_comments * 100
     # print(f"Percentage of positive comments",percentage_of_positive_comments,"%")
     
-    percentage_of_negative_comments = count_negative/total_comments * 100
+    percentage_of_negative_comments = negative_count/total_comments * 100
     # print(f"Percentage of negative comments",percentage_of_negative_comments,"%")
     
     # keys are assigned to each analysis piece so that it is easier to retrieve and display the value in the frontend.
     # So positive_count is the key and count_positive is the value.
     return_back_to_frontend = {
         "df": df,
-        "positive_count": count_positive,
-        "negative_count": count_negative,
-        "total": total_comments,
+        "positive_count": int(positive_count),
+        "negative_count": int(negative_count),
+        "total": int(total_comments),
         "percent_positive": percentage_of_positive_comments,
         "percent_negative": percentage_of_negative_comments
     }   

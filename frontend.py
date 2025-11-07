@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 # Bring backend components to the frontend. NOT the other way around.
 from sentiment_analysis import read_comments,preprocess_text,get_sentiment,overall_sentiment
 # Run the following command in terminal: streamlit run frontend.py
@@ -23,10 +24,16 @@ if insta_comments_csv is not None:
     st.write(f"Positive Comments: {results['positive_count']})")
     st.write(f"Negative Comments: {results['negative_count']}")
     st.write(f"Total Comments: {results['total']}")
-
-    st.dataframe(results["df"][["Comments", "Processed", "sentiment"]])
-
-
-
-
     
+    st.dataframe(results["df"][["Comments", "sentiment"]])
+    
+    
+    chart_df = pd.DataFrame({
+        "Sentiment": ["Positive", "Negative"],
+        "Count": [results["positive_count"], results["negative_count"]]
+    })
+        
+    # Plot the graph. .set_index enables one or more columns of a Dataframe as an index.   
+    # Important when adding new indices to the data as it improves data retrieval 
+    st.bar_chart(chart_df.set_index("Sentiment"))
+            
