@@ -2,11 +2,12 @@ from playwright.sync_api import sync_playwright
 import csv
 import pandas as pd
 import nltk
+from datetime import date 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
-import time
+import os
 
 # LINK UPLOAD --------------------------------------------------------------------
 
@@ -49,12 +50,11 @@ import time
 
 # This only works when a CSV file is uploaded from the frontend.
 
+csv_folder_path = 'C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\PushingTheBoundaries\\Tiktok_trend_detector\\all_csv_files\\'
+
 def read_comments(uploaded_file):
-    # Reads the CSV file that has been uploaded by user
     df = pd.read_csv(uploaded_file)
-    # The CSV file is then put into a new CSV called "comments_analysis"
-    df.to_csv("comments_analysis.csv", index=False)
-    return df 
+    return df
      
 # Assigned a variable which will be used for analysis.     
      

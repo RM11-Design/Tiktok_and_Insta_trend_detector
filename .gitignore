@@ -4,5 +4,5 @@ main.py
 venv
 requirements.txt
 sources.txt
-sample_comments_only.csv
-comments.csv
+all_csv_files
+comments
