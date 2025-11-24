@@ -20,7 +20,7 @@ st.set_page_config(
     layout="wide")
 
 st.title("RM Analytics")
-st.subheader("Find out the emotion behind a piece of text.")
+st.subheader("Find out the emotion behind what people think.")
 
 # insta_link = st.text_input("Enter URL of Instagram Reel: ")
 
@@ -81,7 +81,7 @@ if insta_comments_csv is not None:
 # 'links' is the list of CSV files in the database        
 links = get_all_links()
 
-st.subheader("Saved Dashboards")
+st.subheader("Saved comments")
 
 for file_id, file_name in links:
     # Creates a clickable button for each saved CSV.

@@ -1,4 +1,3 @@
-from playwright.sync_api import sync_playwright
 import csv
 import pandas as pd
 import nltk
@@ -8,45 +7,6 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import os
-
-# LINK UPLOAD --------------------------------------------------------------------
-
-# while True:
-
-# instagram_video_link = "https://www.instagram.com/p/DQr0xdwDYnN/?img_index=1"
-
-# def scrape_comments(insta_link):
-    
-#     comments = []
-
-#     with sync_playwright() as p:
-#         browser = p.chromium.launch(headless=False,slow_mo=50)
-#         page = browser.new_page()
-#         # page.goto(instagram_video_link)
-#         page.goto(insta_link)
-        
-#         # Click on decline cookies    
-#         page.get_by_role("button", name="Decline optional cookies").click()
-        
-#         time.sleep(4)
-            
-#         # Click on X button   
-#         page.locator("div[role='button']", has=page.locator("svg[aria-label='Close']")).click()
-        
-#         all_spans = page.locator('//span').all()
-        
-#         time.sleep(3)
-
-#         for span in all_spans:
-#             text = span.text_content()
-#             if text:
-#                 comments.append(text)
-
-#         browser.close()
-    
-#     return comments
-
-# -------------------------------------------------------------------------------
 
 # This only works when a CSV file is uploaded from the frontend.
 
