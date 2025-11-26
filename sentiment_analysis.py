@@ -2,19 +2,31 @@ import csv
 import pandas as pd
 import nltk
 from datetime import date 
+# from transformers import pipeline
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 import os
 
-# This only works when a CSV file is uploaded from the frontend.
 
-csv_folder_path = 'C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\PushingTheBoundaries\\Tiktok_trend_detector\\all_csv_files\\'
+# summarisation=pipeline("summarization",model="t5-small",framework="pt")
+
+# This only works when a CSV file is uploaded from the frontend.
 
 def read_comments(uploaded_file):
     df = pd.read_csv(uploaded_file)
     return df
+
+
+# def sentiment_summary(df):
+#     all_comments = df['Comments'].astype(str).str.cat(sep=' ')
+#     summary = summarisation(all_comments,
+#                             max_length=500,
+#                             min_length=40,
+#                             do_sample=False)
+#     summarised_text = summary[0]['summary_text']
+#     return summarised_text
      
 # Assigned a variable which will be used for analysis.     
      
@@ -64,7 +76,8 @@ def overall_sentiment(df):
         "negative_count": int(negative_count),
         "total": int(total_comments),
         "percent_positive": percentage_of_positive_comments,
-        "percent_negative": percentage_of_negative_comments
+        "percent_negative": percentage_of_negative_comments,
+        # "summary": sentiment_summary(df)
     }   
     
     return return_back_to_frontend          

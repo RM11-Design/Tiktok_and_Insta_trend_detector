@@ -46,6 +46,9 @@ def analyse_and_visualise(df):
     # Important when adding new indices to the data as it improves data retrieval 
     
     col1, col2, col3 = st.columns(3)
+    
+    # with col1:
+    #     st.write(results["summary"])
                     
     with col2:
         # Comparing the number of positive and negative comments. 
