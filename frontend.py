@@ -4,15 +4,14 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 from wordcloud import WordCloud, STOPWORDS
-from database import init_db, csv_in_database, get_all_links
+from database import CSVDatabase
 # Bring backend components to the frontend. NOT the other way around.
 from sentiment_analysis import read_comments,preprocess_text,get_sentiment,overall_sentiment
 from creds import csv_folder_path
 
-
 # Run the following command in terminal: streamlit run frontend.py
 
-init_db()
+db = CSVDatabase()
 
 st.set_page_config(
     page_title="RM Analytics",
@@ -73,13 +72,16 @@ if insta_comments_csv is not None:
         df.to_csv(save_path, index=False)
         
         database_name = "all_csv_files.db"
-        csv_in_database(csv_folder_path, database_name)
-        
+        csv_path = os.path.join(csv_folder_path, insta_comments_csv.name)
+
+        csv_path = os.path.join(csv_folder_path, insta_comments_csv.name)
+        db.add_csv(insta_comments_csv.name, csv_path)  
+              
         st.success("Dashboard saved succesfully")
         
         
 # 'links' is the list of CSV files in the database        
-links = get_all_links()
+links = db.get_all_csvs()
 
 st.subheader("Saved comments")
 
@@ -89,9 +91,4 @@ for file_id, file_name in links:
         csv_path = file_id
         csv_path = os.path.join(csv_folder_path, file_name)
         df = read_comments(csv_path)
-        analyse_and_visualise(df)
-        
-              
-    
-    
-            
+        analyse_and_visualise(df)         
