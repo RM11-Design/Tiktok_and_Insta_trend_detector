@@ -10,8 +10,6 @@ import os
 
 # This only works when a CSV file is uploaded from the frontend.
 
-csv_folder_path = 'C:\\Users\\tmrom\\OneDrive\\Desktop\\Python\\PushingTheBoundaries\\Tiktok_trend_detector\\all_csv_files\\'
-
 def read_comments(uploaded_file):
     df = pd.read_csv(uploaded_file)
     return df

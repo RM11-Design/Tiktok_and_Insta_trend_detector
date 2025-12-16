@@ -38,6 +38,9 @@ Paste the path in the "csv_folder_path" variable.
 Click Save.
 Sometimes, you made need to add double backslashes due to unicode error. So add another backslash to each backslash that is currently in the file path.
 
+Go to "sentiment_analysis.py"
+Change the file path for variable "csv_folder_path"
+
 # Run the following command in terminal: streamlit run frontend.py
 
 On the web app, click on the "browse files" button.
